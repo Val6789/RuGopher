@@ -11,6 +11,7 @@ Upcoming features:
 
 	* Downloading files
 	* Bookmarks
+	* History, back/forward
 
 Screenshot:
 

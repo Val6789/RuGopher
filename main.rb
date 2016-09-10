@@ -1,4 +1,4 @@
-#/usr/bin/env ruby
+#!/usr/bin/env ruby
 require "fox16"
 require "uri"
 
@@ -13,7 +13,7 @@ class MainWindow < FXMainWindow
 		
 		up = FXButton.new(toolbar, "Up")
 		
-		url = FXTextField.new(toolbar, 50)
+		url = FXTextField.new(toolbar, 50, nil, 0, LAYOUT_FILL_X|LAYOUT_FILL_Y)
 		url.text = "gopher://gopher.floodgap.com/"
 		
 		go = FXButton.new(toolbar, "->")
@@ -59,6 +59,7 @@ class MainWindow < FXMainWindow
 		@items.each do |item|
 			icon = nil
 			
+			# TODO optimize this (don't create icons everytime)
 			if item[:type] == "i" then
 				icon = FXPNGIcon.new(app, File.open("icons/blank.png", "rb").read)
 				icon.create

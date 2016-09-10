@@ -43,11 +43,17 @@ class Gopher
 		return result
 	end
 	
-	# Download to disk
-	def download(path, destination)
+	def get(path)
 		socket = TCPSocket.open(@server, @port)
 		socket.print(path + "\n")
 		response = socket.read
+		
+		return response
+	end
+	
+	# Download to disk
+	def download(path, destination)
+		data = get(path)
 		
 		# TODO
 	end
