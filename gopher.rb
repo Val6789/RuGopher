@@ -36,7 +36,7 @@ class Gopher
 				:description => splitted[0],
 				:path => splitted[1],
 				:host => splitted[2],
-				:port => splitted[3]
+				:port => splitted[3].to_i
 			}
 		end
 		
