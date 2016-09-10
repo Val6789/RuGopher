@@ -9,4 +9,9 @@ Features:
 
 Upcoming features:
 
+	* Downloading files
 	* Bookmarks
+
+Screenshot:
+
+![Screenshot](screenshots/screen1.png)

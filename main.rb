@@ -27,7 +27,7 @@ class MainWindow < FXMainWindow
 		@items = Array.new
 		
 		@iconList.connect(SEL_CLICKED) do |sender, sel, index|
-			if @items[index][:type] != "i" then
+			if @items[index][:type] == "1" then
 				target = "gopher://" + @items[index][:host] + @items[index][:path]
 				url.text = target
 				navigate(url.text)
@@ -57,7 +57,20 @@ class MainWindow < FXMainWindow
 		@items = Gopher.new(uri.host, port).list(uri.path)
 		
 		@items.each do |item|
-			@iconList.appendItem(item[:description])
+			icon = nil
+			
+			if item[:type] == "i" then
+				icon = FXPNGIcon.new(app, File.open("icons/blank.png", "rb").read)
+				icon.create
+			elsif item[:type] == "1" then
+				icon = FXPNGIcon.new(app, File.open("icons/folder.png", "rb").read)
+				icon.create
+			elsif item[:type] == "0" or item[:type] == "5" or item[:type] == "9" then
+				icon = FXPNGIcon.new(app, File.open("icons/file.png", "rb").read)
+				icon.create
+			end
+			
+			@iconList.appendItem(item[:description], nil, icon)
 		end
 	end
 end	
