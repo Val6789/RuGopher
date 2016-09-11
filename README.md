@@ -16,4 +16,4 @@ Upcoming features:
 
 Screenshot:
 
-![Screenshot](screenshots/screen2.png)
+![Screenshot](screenshots/screen3.png)
