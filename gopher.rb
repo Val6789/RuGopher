@@ -11,17 +11,22 @@ class Gopher
 	end
 	
 	# Returns the raw output from a Gopher request
-	def list_raw(path)
+	def list_raw(path, query = "")
 		socket = TCPSocket.open(@server, @port)
-		socket.print(path + "\n")
+		if query.empty? then
+			socket.print(path + "\n")
+		else
+			socket.print(path + "\t" + query + "\n")
+			puts query
+		end
 		response = socket.read
 		
 		return response
 	end
 	
 	# Get the parsed file list
-	def list(path)
-		response = list_raw(path)
+	def list(path, query = "")
+		response = list_raw(path, query)
 		
 		lines = response.split "\n"
 		

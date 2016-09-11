@@ -10,6 +10,7 @@ include Fox
 class MainWindow < FXMainWindow	
 	def initialize(app, title, w, h)	
 		super(app, title, :width => w, :height => h)
+		
 		@icons = {
 			:blank => FXPNGIcon.new(app, File.open("icons/blank.png", "rb").read),
 			:folder => FXPNGIcon.new(app, File.open("icons/folder.png", "rb").read),
@@ -32,7 +33,10 @@ class MainWindow < FXMainWindow
 		@url.text = "gopher://gopher.floodgap.com/"
 		
 		go = FXButton.new(toolbar, "Go", @icons[:right])
-	
+		
+		FXMenuButton.new(toolbar, "Bookmarks")
+		FXMenuButton.new(toolbar, "History")
+		
 		@iconList = FXIconList.new(self, nil, 0, ICONLIST_MINI_ICONS|ICONLIST_AUTOSIZE|ICONLIST_COLUMNS|LAYOUT_FILL_X|LAYOUT_FILL_Y)
 		
 		back.connect(SEL_COMMAND) do
@@ -64,13 +68,13 @@ class MainWindow < FXMainWindow
 		show(PLACEMENT_SCREEN)	
 	end
 	
-	def navigate(target)
+	def navigate(target, query = "")
 		uri = URI(target)
 		
 		uri.port ? port = uri.port : port = 70
 		
 		begin
-			@items = Gopher.new(uri.host, port).list(uri.path)
+			@items = Gopher.new(uri.host, port).list(uri.path, query)
 		rescue => msg
 			FXMessageBox.error(self, MBOX_OK, "Error", "Network error:\n" + msg.to_s)
 			@items = []
@@ -118,11 +122,19 @@ class MainWindow < FXMainWindow
 			if not dest.empty? then
 				Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
 			end
-		elsif @items[index][:type] == "I" or @items[index][:type] == "p" or @items[index][:type] == "g"
+		elsif @items[index][:type] == "I" or @items[index][:type] == "p" or @items[index][:type] == "g" then
 			# Displays a picture
 			dest = "/tmp/RuGopher-pic-" + rand(0..10000).to_s + File.extname(@items[index][:path])
+			
 			Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
 			system("xdg-open " + dest)
+		elsif @items[index][:type] == "7" then
+			# Search queries
+			query = FXInputDialog.getString("", app, "RuGopher", "Enter yoour query:")
+			
+			if query and not query.empty? then
+				navigate("gopher://" + @items[index][:host] + @items[index][:path], query)
+			end
 		else
 			puts "Unknown type: " + @items[index][:type] + " path: " + @items[index][:path]
 		end

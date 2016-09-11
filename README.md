@@ -7,12 +7,12 @@ Features:
 
  * Browsing gopherspace
  * Downloading files
+ * Search
 
 Upcoming features:
 
  * Bookmarks
  * History, back/forward
- * Search
 
 Screenshot:
 
