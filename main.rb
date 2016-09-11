@@ -39,6 +39,17 @@ class MainWindow < FXMainWindow
 				
 				@textdialog.configure(data, @items[index][:description])
 				@textdialog.show
+			elsif @items[index][:type] == "4" or @items[index][:type] == "5" or @items[index][:type] == "6" or @items[index][:type] == "9" then
+				# Download a file
+				dest = FXFileDialog.getSaveFilename(self, "Save file as...", "/")
+				if not dest.empty? then
+					Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
+				end
+			elsif @items[index][:type] == "I"
+				# Displays a picture
+				dest = "/tmp/RuGopher-pic-" + rand(0..10000).to_s + File.extname(@items[index][:path])
+				Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
+				system("xdg-open " + dest)
 			end
 		end
 				
@@ -78,8 +89,11 @@ class MainWindow < FXMainWindow
 			elsif item[:type] == "0" then
 				icon = FXPNGIcon.new(app, File.open("icons/text.png", "rb").read)
 				icon.create
-			elsif item[:type] == "5" or item[:type] == "9" then
+			elsif item[:type] == "4" or item[:type] == "5" or item[:type] == "6" or item[:type] == "9" then
 				icon = FXPNGIcon.new(app, File.open("icons/file.png", "rb").read)
+				icon.create
+			elsif item[:type] == "I" then
+				icon = FXPNGIcon.new(app, File.open("icons/pic.png", "rb").read)
 				icon.create
 			end
 			

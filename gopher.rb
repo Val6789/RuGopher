@@ -55,6 +55,6 @@ class Gopher
 	def download(path, destination)
 		data = get(path)
 		
-		# TODO
+		File.open(destination, "wb") { |file| file.write(data) }
 	end
 end
