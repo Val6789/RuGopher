@@ -7,7 +7,7 @@ require "./text_dialog"
 
 include Fox
 
-class MainWindow < FXMainWindow	
+class MainWindow < FXMainWindow
 	def initialize(app, title, w, h)	
 		super(app, title, :width => w, :height => h)
 		
@@ -38,6 +38,7 @@ class MainWindow < FXMainWindow
 		FXMenuButton.new(toolbar, "History")
 		
 		@iconList = FXIconList.new(self, nil, 0, ICONLIST_MINI_ICONS|ICONLIST_AUTOSIZE|ICONLIST_COLUMNS|LAYOUT_FILL_X|LAYOUT_FILL_Y)
+		@iconList.font = FXFont.new(getApp(), "Monospace", 8)
 		
 		back.connect(SEL_COMMAND) do
 			# TODO
@@ -69,12 +70,12 @@ class MainWindow < FXMainWindow
 	end
 	
 	def navigate(target, query = "")
-		uri = URI(target)
+		uri = URI(URI.escape target)
 		
 		uri.port ? port = uri.port : port = 70
 		
 		begin
-			@items = Gopher.new(uri.host, port).list(uri.path, query)
+			@items = Gopher.new(uri.host, port).list(URI.unescape(uri.path), query)
 		rescue => msg
 			FXMessageBox.error(self, MBOX_OK, "Error", "Network error:\n" + msg.to_s)
 			@items = []
@@ -130,7 +131,7 @@ class MainWindow < FXMainWindow
 			system("xdg-open " + dest)
 		elsif @items[index][:type] == "7" then
 			# Search queries
-			query = FXInputDialog.getString("", app, "RuGopher", "Enter yoour query:")
+			query = FXInputDialog.getString("", app, "RuGopher", "Enter your query:")
 			
 			if query and not query.empty? then
 				navigate("gopher://" + @items[index][:host] + @items[index][:path], query)
