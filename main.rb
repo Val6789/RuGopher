@@ -113,13 +113,13 @@ class MainWindow < FXMainWindow
 			if not dest.empty? then
 				Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
 			end
-		elsif @items[index][:type] == "I" or @items[index][:type] == "p"
+		elsif @items[index][:type] == "I" or @items[index][:type] == "p" or @items[index][:type] == "g"
 			# Displays a picture
 			dest = "/tmp/RuGopher-pic-" + rand(0..10000).to_s + File.extname(@items[index][:path])
 			Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
 			system("xdg-open " + dest)
-		# else
-		#	puts "Unknown type: " + @items[index][:type]
+		else
+			puts "Unknown type: " + @items[index][:type] + " path: " + @items[index][:path]
 		end
 	end
 end	

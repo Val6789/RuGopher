@@ -19,11 +19,16 @@ class Gopher
 		return response
 	end
 	
+	# Get the parsed file list
 	def list(path)
 		response = list_raw(path)
 		
 		lines = response.split "\n"
-		# TODO handle final dot
+		
+		# Handle the final dot if it is there
+		if lines[-1].strip == "." then
+			lines = lines[0..-2]
+		end
 		
 		result = Array.new lines.size
 		lines.each.with_index do |line, i|
@@ -43,6 +48,7 @@ class Gopher
 		return result
 	end
 	
+	# Get a file
 	def get(path)
 		socket = TCPSocket.open(@server, @port)
 		socket.print(path + "\n")

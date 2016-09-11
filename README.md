@@ -12,6 +12,7 @@ Upcoming features:
 
  * Bookmarks
  * History, back/forward
+ * Search
 
 Screenshot:
 
