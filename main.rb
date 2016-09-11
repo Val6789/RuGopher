@@ -24,52 +24,36 @@ class MainWindow < FXMainWindow
 		
 		toolbar = FXToolBar.new(self)
 		
+		back = FXButton.new(toolbar, "Back", @icons[:left])
 		up = FXButton.new(toolbar, "Up", @icons[:up])
 		
-		url = FXTextField.new(toolbar, 50, nil, 0, LAYOUT_FILL_X|LAYOUT_FILL_Y)
-		url.text = "gopher://gopher.floodgap.com/"
+		@url = FXTextField.new(toolbar, 50, nil, 0, LAYOUT_FILL_X|LAYOUT_FILL_Y)
+		@url.text = "gopher://gopher.floodgap.com/"
 		
 		go = FXButton.new(toolbar, "Go", @icons[:right])
 	
 		@iconList = FXIconList.new(self, nil, 0, ICONLIST_MINI_ICONS|ICONLIST_AUTOSIZE|ICONLIST_COLUMNS|LAYOUT_FILL_X|LAYOUT_FILL_Y)
 		
+		back.connect(SEL_COMMAND) do
+			# TODO
+		end
+		
 		go.connect(SEL_COMMAND) do
-			self.navigate(url.text)
+			self.navigate(@url.text)
 		end
 		
 		@items = Array.new
 		@textdialog = TextDialog.new(self)
 		
 		@iconList.connect(SEL_CLICKED) do |sender, sel, index|
-			if @items[index][:type] == "1" then
-				target = "gopher://" + @items[index][:host] + @items[index][:path]
-				url.text = target
-				navigate(url.text)
-			elsif @items[index][:type] == "0" then
-				# Display the text file in a dialog window
-				data = Gopher.new(@items[index][:host], @items[index][:port]).get(@items[index][:path])
-				
-				@textdialog.configure(data, @items[index][:description])
-				@textdialog.show
-			elsif @items[index][:type] == "4" or @items[index][:type] == "5" or @items[index][:type] == "6" or @items[index][:type] == "9" then
-				# Download a file
-				dest = FXFileDialog.getSaveFilename(self, "Save file as...", "")
-				if not dest.empty? then
-					Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
-				end
-			elsif @items[index][:type] == "I" or @items[index][:type] == "p"
-				# Displays a picture
-				dest = "/tmp/RuGopher-pic-" + rand(0..10000).to_s + File.extname(@items[index][:path])
-				Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
-				system("xdg-open " + dest)
-			end
+			item_click(sender, sel, index)
 		end
 				
 		up.connect(SEL_COMMAND) do
-			target = File.dirname url.text
+			target = File.dirname @url.text
 			if target != "gopher:" # If we are not at the root dir
-				url.text = target
-				self.navigate(url.text)
+				@url.text = target
+				self.navigate(@url.text)
 			end
 		end
 	end
@@ -104,6 +88,31 @@ class MainWindow < FXMainWindow
 			end
 			
 			@iconList.appendItem(item[:description], nil, icon)
+		end
+	end
+	
+	def item_click(sender, sel, index)
+		if @items[index][:type] == "1" then
+			target = "gopher://" + @items[index][:host] + @items[index][:path]
+			@url.text = target
+			navigate(@url.text)
+		elsif @items[index][:type] == "0" then
+			# Display the text file in a dialog window
+			data = Gopher.new(@items[index][:host], @items[index][:port]).get(@items[index][:path])
+			
+			@textdialog.configure(data, @items[index][:description])
+			@textdialog.show
+			elsif @items[index][:type] == "4" or @items[index][:type] == "5" or @items[index][:type] == "6" or @items[index][:type] == "9" then
+			# Download a file
+			dest = FXFileDialog.getSaveFilename(self, "Save file as...", "")
+			if not dest.empty? then
+				Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
+			end
+		elsif @items[index][:type] == "I" or @items[index][:type] == "p"
+			# Displays a picture
+			dest = "/tmp/RuGopher-pic-" + rand(0..10000).to_s + File.extname(@items[index][:path])
+			Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
+			system("xdg-open " + dest)
 		end
 	end
 end	
