@@ -17,7 +17,6 @@ class Gopher
 			socket.print(path + "\n")
 		else
 			socket.print(path + "\t" + query + "\n")
-			puts query
 		end
 		response = socket.read
 		
