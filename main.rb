@@ -18,7 +18,8 @@ class MainWindow < FXMainWindow
 			:pic => FXPNGIcon.new(app, File.open("icons/pic.png", "rb").read),
 			:left => FXPNGIcon.new(app, File.open("icons/left.png", "rb").read),
 			:right => FXPNGIcon.new(app, File.open("icons/right.png", "rb").read),
-			:up => FXPNGIcon.new(app, File.open("icons/up.png", "rb").read)
+			:up => FXPNGIcon.new(app, File.open("icons/up.png", "rb").read),
+			:search => FXPNGIcon.new(app, File.open("icons/search.png", "rb").read)
 		}
 		@icons.each { |i, icon| icon.create }
 		
@@ -76,6 +77,7 @@ class MainWindow < FXMainWindow
 		end
 		
 		@iconList.clearItems()
+		
 		# Populate the file list
 		@items.each do |item|
 			icon = nil
@@ -88,6 +90,8 @@ class MainWindow < FXMainWindow
 				icon = @icons[:text]
 			elsif item[:type] == "4" or item[:type] == "5" or item[:type] == "6" or item[:type] == "9" then
 				icon = @icons[:file]
+			elsif item[:type] == "7" then
+				icon = @icons[:search]
 			elsif item[:type] == "I" or item[:type] == "p" or item[:type] == "g" then
 				icon = @icons[:pic]
 			end
@@ -107,9 +111,10 @@ class MainWindow < FXMainWindow
 			
 			@textdialog.configure(data, @items[index][:description])
 			@textdialog.show
-			elsif @items[index][:type] == "4" or @items[index][:type] == "5" or @items[index][:type] == "6" or @items[index][:type] == "9" then
+		elsif @items[index][:type] == "4" or @items[index][:type] == "5" or @items[index][:type] == "6" or @items[index][:type] == "9" then
 			# Download a file
 			dest = FXFileDialog.getSaveFilename(self, "Save file as...", "")
+			
 			if not dest.empty? then
 				Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
 			end
