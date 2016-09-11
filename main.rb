@@ -60,6 +60,15 @@ class MainWindow < FXMainWindow
 				self.navigate(url.text)
 			end
 		end
+		
+		@icons = {
+			:blank => FXPNGIcon.new(app, File.open("icons/blank.png", "rb").read),
+			:folder => FXPNGIcon.new(app, File.open("icons/folder.png", "rb").read),
+			:text => FXPNGIcon.new(app, File.open("icons/text.png", "rb").read),
+			:file => FXPNGIcon.new(app, File.open("icons/file.png", "rb").read),
+			:pic => FXPNGIcon.new(app, File.open("icons/pic.png", "rb").read)
+		}
+		@icons.each { |i, icon| icon.create }
 	end
 		
 	def create	
@@ -79,22 +88,16 @@ class MainWindow < FXMainWindow
 		@items.each do |item|
 			icon = nil
 			
-			# TODO optimize this (don't create icons everytime)
 			if item[:type] == "i" then
-				icon = FXPNGIcon.new(app, File.open("icons/blank.png", "rb").read)
-				icon.create
+				icon = @icons[:blank]
 			elsif item[:type] == "1" then
-				icon = FXPNGIcon.new(app, File.open("icons/folder.png", "rb").read)
-				icon.create
+				icon = @icons[:folder]
 			elsif item[:type] == "0" then
-				icon = FXPNGIcon.new(app, File.open("icons/text.png", "rb").read)
-				icon.create
+				icon = @icons[:text]
 			elsif item[:type] == "4" or item[:type] == "5" or item[:type] == "6" or item[:type] == "9" then
-				icon = FXPNGIcon.new(app, File.open("icons/file.png", "rb").read)
-				icon.create
-			elsif item[:type] == "I" or item[:type] == "p" then
-				icon = FXPNGIcon.new(app, File.open("icons/pic.png", "rb").read)
-				icon.create
+				icon = @icons[:file]
+			elsif item[:type] == "I" or item[:type] == "p" or item[:type] == "g" then
+				icon = @icons[:pic]
 			end
 			
 			@iconList.appendItem(item[:description], nil, icon)
