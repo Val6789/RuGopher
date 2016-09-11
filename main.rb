@@ -45,7 +45,7 @@ class MainWindow < FXMainWindow
 				if not dest.empty? then
 					Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
 				end
-			elsif @items[index][:type] == "I"
+			elsif @items[index][:type] == "I" or @items[index][:type] == "p"
 				# Displays a picture
 				dest = "/tmp/RuGopher-pic-" + rand(0..10000).to_s + File.extname(@items[index][:path])
 				Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
@@ -92,7 +92,7 @@ class MainWindow < FXMainWindow
 			elsif item[:type] == "4" or item[:type] == "5" or item[:type] == "6" or item[:type] == "9" then
 				icon = FXPNGIcon.new(app, File.open("icons/file.png", "rb").read)
 				icon.create
-			elsif item[:type] == "I" then
+			elsif item[:type] == "I" or item[:type] == "p" then
 				icon = FXPNGIcon.new(app, File.open("icons/pic.png", "rb").read)
 				icon.create
 			end
