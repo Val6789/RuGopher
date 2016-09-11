@@ -68,9 +68,14 @@ class MainWindow < FXMainWindow
 		
 		uri.port ? port = uri.port : port = 70
 		
-		@iconList.clearItems()
-		@items = Gopher.new(uri.host, port).list(uri.path)
+		begin
+			@items = Gopher.new(uri.host, port).list(uri.path)
+		rescue => msg
+			FXMessageBox.error(self, MBOX_OK, "Error", "Network error:\n" + msg.to_s)
+			@items = []
+		end
 		
+		@iconList.clearItems()
 		# Populate the file list
 		@items.each do |item|
 			icon = nil
@@ -113,6 +118,8 @@ class MainWindow < FXMainWindow
 			dest = "/tmp/RuGopher-pic-" + rand(0..10000).to_s + File.extname(@items[index][:path])
 			Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
 			system("xdg-open " + dest)
+		# else
+		#	puts "Unknown type: " + @items[index][:type]
 		end
 	end
 end	
