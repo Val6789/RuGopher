@@ -10,14 +10,26 @@ include Fox
 class MainWindow < FXMainWindow	
 	def initialize(app, title, w, h)	
 		super(app, title, :width => w, :height => h)
+		@icons = {
+			:blank => FXPNGIcon.new(app, File.open("icons/blank.png", "rb").read),
+			:folder => FXPNGIcon.new(app, File.open("icons/folder.png", "rb").read),
+			:text => FXPNGIcon.new(app, File.open("icons/text.png", "rb").read),
+			:file => FXPNGIcon.new(app, File.open("icons/file.png", "rb").read),
+			:pic => FXPNGIcon.new(app, File.open("icons/pic.png", "rb").read),
+			:left => FXPNGIcon.new(app, File.open("icons/left.png", "rb").read),
+			:right => FXPNGIcon.new(app, File.open("icons/right.png", "rb").read),
+			:up => FXPNGIcon.new(app, File.open("icons/up.png", "rb").read)
+		}
+		@icons.each { |i, icon| icon.create }
+		
 		toolbar = FXToolBar.new(self)
 		
-		up = FXButton.new(toolbar, "Up")
+		up = FXButton.new(toolbar, "Up", @icons[:up])
 		
 		url = FXTextField.new(toolbar, 50, nil, 0, LAYOUT_FILL_X|LAYOUT_FILL_Y)
 		url.text = "gopher://gopher.floodgap.com/"
 		
-		go = FXButton.new(toolbar, "->")
+		go = FXButton.new(toolbar, "Go", @icons[:right])
 	
 		@iconList = FXIconList.new(self, nil, 0, ICONLIST_MINI_ICONS|ICONLIST_AUTOSIZE|ICONLIST_COLUMNS|LAYOUT_FILL_X|LAYOUT_FILL_Y)
 		
@@ -60,15 +72,6 @@ class MainWindow < FXMainWindow
 				self.navigate(url.text)
 			end
 		end
-		
-		@icons = {
-			:blank => FXPNGIcon.new(app, File.open("icons/blank.png", "rb").read),
-			:folder => FXPNGIcon.new(app, File.open("icons/folder.png", "rb").read),
-			:text => FXPNGIcon.new(app, File.open("icons/text.png", "rb").read),
-			:file => FXPNGIcon.new(app, File.open("icons/file.png", "rb").read),
-			:pic => FXPNGIcon.new(app, File.open("icons/pic.png", "rb").read)
-		}
-		@icons.each { |i, icon| icon.create }
 	end
 		
 	def create	
