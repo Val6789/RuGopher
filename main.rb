@@ -41,7 +41,7 @@ class MainWindow < FXMainWindow
 				@textdialog.show
 			elsif @items[index][:type] == "4" or @items[index][:type] == "5" or @items[index][:type] == "6" or @items[index][:type] == "9" then
 				# Download a file
-				dest = FXFileDialog.getSaveFilename(self, "Save file as...", "/")
+				dest = FXFileDialog.getSaveFilename(self, "Save file as...", "")
 				if not dest.empty? then
 					Gopher.new(@items[index][:host], @items[index][:port]).download(@items[index][:path], dest)
 				end
