@@ -12,6 +12,7 @@ class Gopher
 	
 	# Returns the raw output from a Gopher request
 	def list_raw(path, query = "")
+		# socket = Socket.tcp(@server, @port, connect_timeout: 3)
 		socket = TCPSocket.open(@server, @port)
 		if query.empty? then
 			socket.print(path + "\n")
