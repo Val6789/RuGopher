@@ -36,6 +36,6 @@ Downloading Rugopher
 
 First, install ruby and [FXRuby](https://github.com/larskanis/fxruby#install). You can then download and run RuGopher:
 
-  git clone https://github.com/Val67/RuGopher.git
+  git clone https://github.com/Val6789/RuGopher.git
   cd RuGopher
   ruby main.rb
