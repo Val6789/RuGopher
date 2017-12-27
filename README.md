@@ -31,11 +31,13 @@ Finally, Gopher stayed true to the web's original idea: being a place to share d
 
 [1] The Veronica search engine could be thought as a central index, but it has neither the scope nor the variety of services Google offers
 
+If you are interested in the Gopher project, please visit gopher://gopherproject.org using your preferred Gopher client.
+
 Downloading Rugopher
 --------------------
 
 First, install ruby and [FXRuby](https://github.com/larskanis/fxruby#install). You can then download and run RuGopher:
 
-  git clone https://github.com/Val6789/RuGopher.git
-  cd RuGopher
-  ruby main.rb
+    git clone https://github.com/Val6789/RuGopher.git
+    cd RuGopher
+    ruby main.rb
