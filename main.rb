@@ -60,16 +60,21 @@ class MainWindow < FXMainWindow
 		FXMenuButton.new(toolbar, "Bookmarks", nil, @bookmark_menu)
 		FXMenuButton.new(toolbar, "History", nil, @history_menu)
 		
+		# Bookmarks menu
+		File.open("bookmarks.txt", "r").each_line do |line|
+			FXMenuCommand.new(@bookmark_menu, line.chomp, nil).connect(SEL_COMMAND) do
+				self.navigate(line)
+			end
+		end
+				
 		# Main view
 		@iconList = FXIconList.new(self, nil, 0, ICONLIST_MINI_ICONS|ICONLIST_AUTOSIZE|ICONLIST_COLUMNS|LAYOUT_FILL_X|LAYOUT_FILL_Y)
 		@iconList.font = FXFont.new(getApp(), "Monospace", 8)
 		
 		# Callbacks
 		back.connect(SEL_COMMAND) do
-			if @history.length > 1
-				@history.pop
+			if @history.length > 0
 				self.navigate(@history[-1].to_s)
-				update_history_menu
 			end
 		end
 		
@@ -175,7 +180,17 @@ class MainWindow < FXMainWindow
 	end
 	
 	def update_history_menu
-		# TODO
+		# Clear the menu
+		@history_menu.children.each do |c|
+			@history_menu.removeChild c
+		end
+		
+		# Repopulate the menu
+		@history.each do |uri|
+			FXMenuCommand.new(@history_menu, "uri.to_s", nil).connect(SEL_COMMAND) do
+				navigate(line)
+			end
+		end
 	end
 end	
 

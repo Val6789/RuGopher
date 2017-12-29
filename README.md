@@ -8,10 +8,10 @@ Features:
  * Browsing gopherspace
  * Downloading files
  * Search
+ * Bookmarks (specify in bookmarks.txt)
 
 Upcoming features:
 
- * Bookmarks
  * History, back/forward
 
 Screenshot:
