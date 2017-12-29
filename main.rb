@@ -40,6 +40,9 @@ class MainWindow < FXMainWindow
 		}
 		@icons.each { |i, icon| icon.create }
 		
+		@history = Array.new
+		
+		# Toolbar
 		toolbar = FXToolBar.new(self)
 		
 		back = FXButton.new(toolbar, "Back", @icons[:left])
@@ -50,14 +53,24 @@ class MainWindow < FXMainWindow
 		
 		go = FXButton.new(toolbar, "Go", @icons[:right])
 		
-		FXMenuButton.new(toolbar, "Bookmarks")
-		FXMenuButton.new(toolbar, "History")
+		# Menus
+		@bookmark_menu = FXMenuPane.new(self)
+		@history_menu = FXMenuPane.new(self)
 		
+		FXMenuButton.new(toolbar, "Bookmarks", nil, @bookmark_menu)
+		FXMenuButton.new(toolbar, "History", nil, @history_menu)
+		
+		# Main view
 		@iconList = FXIconList.new(self, nil, 0, ICONLIST_MINI_ICONS|ICONLIST_AUTOSIZE|ICONLIST_COLUMNS|LAYOUT_FILL_X|LAYOUT_FILL_Y)
 		@iconList.font = FXFont.new(getApp(), "Monospace", 8)
 		
+		# Callbacks
 		back.connect(SEL_COMMAND) do
-			# TODO
+			if @history.length > 1
+				@history.pop
+				self.navigate(@history[-1].to_s)
+				update_history_menu
+			end
 		end
 		
 		go.connect(SEL_COMMAND) do
@@ -97,9 +110,13 @@ class MainWindow < FXMainWindow
 			@items = []
 		end
 		
-		@iconList.clearItems()
+		# Update history
+		@history.push uri
+		update_history_menu
 		
 		# Populate the file list
+		@iconList.clearItems()
+		
 		@items.each do |item|
 			icon = nil
 			
@@ -155,6 +172,10 @@ class MainWindow < FXMainWindow
 		else
 			puts "Unknown type: " + @items[index][:type] + " path: " + @items[index][:path]
 		end
+	end
+	
+	def update_history_menu
+		# TODO
 	end
 end	
 

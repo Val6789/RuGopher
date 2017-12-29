@@ -18,7 +18,7 @@ Screenshot:
 
 ![Screenshot](screenshots/screen3.png)
 
-Why use Gopher in 2016?
+Why use Gopher in ~~2016~~ 2018?
 -----------------------
 
 At the beginning, the World Wide Web and Gopher were close both in their aims and methods. However, the web quickly evolved into what it is today while Gopher became stagnant as a result of licensing problems. But has Gopher became obsolete? I don't think so. Gopher still have some advantages over the web.
@@ -33,7 +33,7 @@ Finally, Gopher stayed true to the web's original idea: being a place to share d
 
 If you are interested in the Gopher project, please visit gopher://gopherproject.org using your preferred Gopher client.
 
-Downloading Rugopher
+Downloading RuGopher
 --------------------
 
 First, install ruby and [FXRuby](https://github.com/larskanis/fxruby#install). You can then download and run RuGopher:
