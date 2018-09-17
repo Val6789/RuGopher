@@ -68,7 +68,7 @@ class MainWindow < FXMainWindow
 		end
 				
 		# Main view
-		@iconList = FXIconList.new(self, nil, 0, ICONLIST_MINI_ICONS|ICONLIST_AUTOSIZE|ICONLIST_COLUMNS|LAYOUT_FILL_X|LAYOUT_FILL_Y)
+		@iconList = FXIconList.new(self, nil, 0, ICONLIST_MINI_ICONS|ICONLIST_AUTOSIZE|ICONLIST_COLUMNS|ICONLIST_SINGLESELECT|LAYOUT_FILL_X|LAYOUT_FILL_Y)
 		@iconList.font = FXFont.new(getApp(), "Monospace", 8)
 		
 		# Callbacks
