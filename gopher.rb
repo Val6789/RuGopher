@@ -1,4 +1,4 @@
-require 'socket'
+require "socket"
 
 # Example usage
 # z = Gopher.new("gopher.quux.org")
@@ -55,6 +55,7 @@ class Gopher
 	
 	# Get a file
 	def get(path)
+		# TODO proper url handling according to spec
 		socket = TCPSocket.open(@server, @port)
 		socket.print(path + "\n")
 		response = socket.read

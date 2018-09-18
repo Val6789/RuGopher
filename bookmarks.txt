@@ -1,2 +1,2 @@
-gopher://gopherproject.org/
 gopher://gopher.floodgap.com/
+gopher://gopherproject.org/

@@ -36,7 +36,8 @@ class MainWindow < FXMainWindow
 			:left => FXPNGIcon.new(app, File.open("icons/left.png", "rb").read),
 			:right => FXPNGIcon.new(app, File.open("icons/right.png", "rb").read),
 			:up => FXPNGIcon.new(app, File.open("icons/up.png", "rb").read),
-			:search => FXPNGIcon.new(app, File.open("icons/search.png", "rb").read)
+			:search => FXPNGIcon.new(app, File.open("icons/search.png", "rb").read),
+			:plus => FXPNGIcon.new(app, File.open("icons/plus.png", "rb").read)
 		}
 		@icons.each { |i, icon| icon.create }
 		
@@ -53,6 +54,18 @@ class MainWindow < FXMainWindow
 		
 		go = FXButton.new(toolbar, "Go", @icons[:right])
 		
+		#~ plus = FXButton.new(toolbar, "Bookmark", @icons[:plus])
+		#~ plus.connect(SEL_COMMAND) do
+			#~ # Add to menu
+			#~ FXMenuCommand.new(@bookmark_menu, @url.text, nil).connect(SEL_COMMAND) do
+				#~ @url.text = @url.text
+				#~ self.navigate(line)
+			#~ end
+			
+			#~ # Add URL to file
+			#~ # TODOD
+		#~ end
+		
 		# Menus
 		@bookmark_menu = FXMenuPane.new(self)
 		@history_menu = FXMenuPane.new(self)
@@ -63,13 +76,14 @@ class MainWindow < FXMainWindow
 		# Bookmarks menu
 		File.open("bookmarks.txt", "r").each_line do |line|
 			FXMenuCommand.new(@bookmark_menu, line.chomp, nil).connect(SEL_COMMAND) do
+				@url.text = line.chomp
 				self.navigate(line)
 			end
 		end
 				
 		# Main view
 		@iconList = FXIconList.new(self, nil, 0, ICONLIST_MINI_ICONS|ICONLIST_AUTOSIZE|ICONLIST_COLUMNS|ICONLIST_SINGLESELECT|LAYOUT_FILL_X|LAYOUT_FILL_Y)
-		@iconList.font = FXFont.new(getApp(), "Monospace", 8)
+		@iconList.font = FXFont.new(getApp(), "Monospace", 10)
 		
 		# Callbacks
 		back.connect(SEL_COMMAND) do
