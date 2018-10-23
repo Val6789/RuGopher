@@ -54,8 +54,8 @@ class MainWindow < FXMainWindow
 		
 		go = FXButton.new(toolbar, "Go", @icons[:right])
 		
-		#~ plus = FXButton.new(toolbar, "Bookmark", @icons[:plus])
-		#~ plus.connect(SEL_COMMAND) do
+		plus = FXButton.new(toolbar, "Bookmark", @icons[:plus])
+		plus.connect(SEL_COMMAND) do
 			#~ # Add to menu
 			#~ FXMenuCommand.new(@bookmark_menu, @url.text, nil).connect(SEL_COMMAND) do
 				#~ @url.text = @url.text
@@ -64,7 +64,7 @@ class MainWindow < FXMainWindow
 			
 			#~ # Add URL to file
 			#~ # TODOD
-		#~ end
+		end
 		
 		# Menus
 		@bookmark_menu = FXMenuPane.new(self)
@@ -88,6 +88,7 @@ class MainWindow < FXMainWindow
 		# Callbacks
 		back.connect(SEL_COMMAND) do
 			if @history.length > 0
+				puts @history[-1].to_s
 				self.navigate(@history[-1].to_s)
 			end
 		end
@@ -105,6 +106,7 @@ class MainWindow < FXMainWindow
 				
 		up.connect(SEL_COMMAND) do
 			target = File.dirname @url.text
+			
 			if target != "gopher:" # If we are not at the root dir
 				@url.text = target
 				self.navigate(@url.text)
@@ -119,8 +121,10 @@ class MainWindow < FXMainWindow
 	
 	def navigate(target, query = "")
 		uri = URI(URI.escape target)
-		
 		uri.port ? port = uri.port : port = 70
+		# Remove /1/ after checking if present
+		uri.path = uri.path[3..-1] if uri.path.start_with? "/1/"
+		uri.path = uri.path[2..-1] if uri.path.start_with? "/1"
 		
 		begin
 			@items = Gopher.new(uri.host, port).list(URI.unescape(uri.path), query)
@@ -159,7 +163,8 @@ class MainWindow < FXMainWindow
 	
 	def item_click(sender, sel, index)
 		if @items[index][:type] == "1" then
-			target = "gopher://" + @items[index][:host] + @items[index][:path]
+			target = "gopher://" + @items[index][:host] + "/1/" + @items[index][:path]
+			
 			@url.text = target
 			navigate(@url.text)
 		elsif @items[index][:type] == "0" then

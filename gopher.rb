@@ -12,13 +12,14 @@ class Gopher
 	
 	# Returns the raw output from a Gopher request
 	def list_raw(path, query = "")
-		# socket = Socket.tcp(@server, @port, connect_timeout: 3)
-		socket = TCPSocket.open(@server, @port)
+		socket = Socket.tcp(@server, @port, connect_timeout: 3)
+		
 		if query.empty? then
 			socket.print(path + "\n")
 		else
 			socket.print(path + "\t" + query + "\n")
 		end
+		
 		response = socket.read
 		
 		return response
@@ -55,8 +56,8 @@ class Gopher
 	
 	# Get a file
 	def get(path)
-		# TODO proper url handling according to spec
 		socket = TCPSocket.open(@server, @port)
+		
 		socket.print(path + "\n")
 		response = socket.read
 		
