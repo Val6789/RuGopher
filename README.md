@@ -5,14 +5,11 @@ A Ruby and FXRuby (FOX Toolkit)-based Gopher client, and a Ruby class for access
 
 Features:
 
- * Browsing gopherspace
- * Downloading files
+ * Good gopherspace support
+ * Very light on ressources
  * Search
- * Bookmarks (specify in bookmarks.txt)
-
-Upcoming features:
-
- * History, back/forward
+ * Bookmarks
+ * Upcoming: History, back/forward
 
 Screenshot:
 

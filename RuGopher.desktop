@@ -4,3 +4,4 @@ Name=RuGopher
 Comment=Gopher client
 Exec=ruby main.rb
 Icon=web-browser
+Categories=Network;WebBrowser;
