@@ -129,8 +129,8 @@ class MainWindow < FXMainWindow
 		begin
 			@items = Gopher.new(uri.host, port).list(URI.unescape(uri.path), query)
 		rescue => msg
-			FXMessageBox.error(self, MBOX_OK, "Error", "Network error:\n" + msg.to_s)
 			@items = []
+			retry if FXMessageBox.error(self, MBOX_OK_CANCEL, "Error", "Network error:\n" + msg.to_s + "\nPress Ok to retry.") == MBOX_CLICKED_OK
 		end
 		
 		# Update history
